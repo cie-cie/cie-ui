@@ -1,16 +1,20 @@
 #include "wx/wx.h"
 #include "ui.h"
 
-class MyApp : public wxApp
+class TestFrame : public CieFrame
 {
-    bool OnInit() override;
+public:
+    TestFrame();
+    void build(wxWindow *parent) override;
 };
 
-wxIMPLEMENT_APP(MyApp);
-
-bool MyApp::OnInit()
+TestFrame::TestFrame() : CieFrame()
 {
-    CieFrame *mainFrame = new CieFrame(nullptr);
-    mainFrame->Show();
-    return true;
 }
+
+void TestFrame::build(wxWindow *parent)
+{
+    new wxButton(parent, wxID_ANY, "Testing");
+}
+
+CIE_START_MAIN_FRAME(TestFrame);

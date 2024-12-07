@@ -1,10 +1,15 @@
 #include "cie_frame.h"
 
-CieFrame::CieFrame(wxWindow *parent) : wxFrame(parent, wxID_ANY, "")
+CieFrame::CieFrame() : title(""), wxFrame(nullptr, wxID_ANY, "")
 {
 }
 
-CieFrame *CieFrame::title(wxString title)
+CieApp *CieFrame::getApp()
 {
-    SetTitle(title);
+    return reinterpret_cast<CieApp *>(wxTheApp);
+}
+
+void CieFrame::executeBuild()
+{
+    return build(this);
 }
