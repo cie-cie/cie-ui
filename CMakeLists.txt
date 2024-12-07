@@ -28,3 +28,6 @@ if(ENABLE_TEST)
 else()
     message(STATUS "Build test: OFF")
 endif()
+
+install(TARGETS cieui DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include/cieui)
