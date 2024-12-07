@@ -14,7 +14,19 @@ TestFrame::TestFrame() : CieFrame()
 
 void TestFrame::build(wxWindow *parent)
 {
-    new wxButton(parent, wxID_ANY, "Testing");
+    SetTitle("Test Frame");
+
+    CieColumn::New(parent)->children( //
+        [](wxWindow *parent)
+        {
+            std::vector<wxWindow *> children = {
+                new wxButton(parent, wxID_ANY, "Tombol 1"),
+                new wxButton(parent, wxID_ANY, "Tombol 2"),
+                new wxButton(parent, wxID_ANY, "Tombol 3"),
+            };
+            return children;
+            //
+        });
 }
 
 CIE_START_MAIN_FRAME(TestFrame);
