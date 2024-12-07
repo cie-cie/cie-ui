@@ -20,9 +20,7 @@ void TestFrame::build(wxWindow *parent)
         [](wxWindow *parent)
         {
             std::vector<wxWindow *> children = {
-                new wxButton(parent, wxID_ANY, "Tombol 1"),
-                new wxButton(parent, wxID_ANY, "Tombol 2"),
-                new wxButton(parent, wxID_ANY, "Tombol 3"),
+                CieButton::New(parent)->text("Button 1"),
             };
             return children;
             //

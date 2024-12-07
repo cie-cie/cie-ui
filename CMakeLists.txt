@@ -5,6 +5,8 @@ project(cieui)
 add_library(cieui
     source/cie_frame.cxx
     source/cie_column.cxx
+    source/cie_button.cxx
+    source/default_theme.cxx
 )
 target_include_directories(cieui PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
