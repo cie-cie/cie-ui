@@ -15,6 +15,9 @@ CieButton::CieButton(wxWindow *parent) : wxControl(parent, wxID_ANY)
     paddingLeft = paddingRight = 24;
     paddingTop = paddingBottom = 12;
 
+    // set default margin
+    mMarginLeft = mMarginRight = mMarginTop = mMarginBottom = 0;
+
     // set default text align
     mTextAlign = CieAlign::CENTER;
 
@@ -69,8 +72,8 @@ void CieButton::onPaint(wxPaintEvent &e)
     int requiredWidth;
     int requiredHeight;
 
-    requiredWidth = textWidth + paddingLeft + paddingRight;
-    requiredHeight = textHeight + paddingTop + paddingBottom;
+    requiredWidth = textWidth + paddingLeft + paddingRight + mMarginLeft + mMarginRight;
+    requiredHeight = textHeight + paddingTop + paddingBottom + mMarginTop + mMarginBottom;
 
     if (size.GetWidth() < requiredWidth || size.GetHeight() < requiredHeight)
     {
@@ -85,7 +88,7 @@ void CieButton::onPaint(wxPaintEvent &e)
     // draw background
     dc.SetPen(*wxTRANSPARENT_PEN);
     dc.SetBrush(wxBrush(GetBackgroundColour()));
-    dc.DrawRectangle(0, 0, size.GetWidth(), size.GetHeight());
+    dc.DrawRectangle(mMarginLeft, mMarginTop, size.GetWidth() - mMarginRight, size.GetHeight() - mMarginBottom);
 
     // draw text
     int textXPos;
@@ -171,6 +174,28 @@ CieButton *CieButton::textAlign(CieAlign align)
 CieButton *CieButton::size(int width, int height)
 {
     SetSize(wxSize(width, height));
+
+    return this;
+}
+
+CieButton *CieButton::margin(int all)
+{
+    return margin(all, all, all, all);
+}
+
+CieButton *CieButton::margin(int topBottom, int leftRight)
+{
+    return margin(topBottom, leftRight, topBottom, leftRight);
+}
+
+CieButton *CieButton::margin(int top, int right, int bottom, int left)
+{
+    mMarginTop = top;
+    mMarginRight = right;
+    mMarginBottom = bottom;
+    mMarginLeft = left;
+
+    Refresh();
 
     return this;
 }

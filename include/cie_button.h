@@ -17,6 +17,10 @@ public:
     CieButton *padding(int topBottom, int leftRight);
     CieButton *padding(int top, int right, int bottom, int left);
 
+    CieButton *margin(int all);
+    CieButton *margin(int topBottom, int leftRight);
+    CieButton *margin(int top, int right, int bottom, int left);
+
     CieButton *textAlign(CieAlign align);
 
     CieButton *size(int width, int height);
@@ -31,6 +35,11 @@ private:
     int paddingRight;
     int paddingBottom;
     int paddingLeft;
+
+    int mMarginTop;
+    int mMarginRight;
+    int mMarginBottom;
+    int mMarginLeft;
 
     CieAlign mTextAlign;
 
