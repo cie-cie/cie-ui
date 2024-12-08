@@ -3,7 +3,7 @@
 
 #include <wx/wx.h>
 
-class CieButton : public wxButton
+class CieButton : public wxControl
 {
 public:
     CieButton(wxWindow *parent);
@@ -13,15 +13,19 @@ public:
     CieButton *text(wxString text);
 
 private:
-    static const wxSize DEFAULT_SIZE;
-
     wxColor baseBackgroundColor;
     wxColor baseForegroundColor;
     wxColor hoverBackgroundColor;
     wxColor hoverForegroundColor;
 
+    int paddingTop;
+    int paddingRight;
+    int paddingBottom;
+    int paddingLeft;
+
     void mouseEnterListener(wxMouseEvent &e);
     void mouseLeaveListener(wxMouseEvent &e);
+    void onPaint(wxPaintEvent &e);
 };
 
 #endif // CIEUI_BUTTON
