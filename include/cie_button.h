@@ -2,6 +2,7 @@
 #define CIEUI_BUTTON
 
 #include <wx/wx.h>
+#include "cie_align.h"
 
 class CieButton : public wxControl
 {
@@ -16,6 +17,10 @@ public:
     CieButton *padding(int topBottom, int leftRight);
     CieButton *padding(int top, int right, int bottom, int left);
 
+    CieButton *textAlign(CieAlign align);
+
+    CieButton *size(int width, int height);
+
 private:
     wxColor baseBackgroundColor;
     wxColor baseForegroundColor;
@@ -26,6 +31,8 @@ private:
     int paddingRight;
     int paddingBottom;
     int paddingLeft;
+
+    CieAlign mTextAlign;
 
     void mouseEnterListener(wxMouseEvent &e);
     void mouseLeaveListener(wxMouseEvent &e);

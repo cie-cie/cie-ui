@@ -15,6 +15,9 @@ CieButton::CieButton(wxWindow *parent) : wxControl(parent, wxID_ANY)
     paddingLeft = paddingRight = 24;
     paddingTop = paddingBottom = 12;
 
+    // set default text align
+    mTextAlign = CieAlign::CENTER;
+
     Bind(wxEVT_ENTER_WINDOW, &CieButton::mouseEnterListener, this);
     Bind(wxEVT_LEAVE_WINDOW, &CieButton::mouseLeaveListener, this);
     Bind(wxEVT_PAINT, &CieButton::onPaint, this);
@@ -85,10 +88,53 @@ void CieButton::onPaint(wxPaintEvent &e)
     dc.DrawRectangle(0, 0, size.GetWidth(), size.GetHeight());
 
     // draw text
+    int textXPos;
+    int textYPos;
+
+    switch (mTextAlign)
+    {
+    case CieAlign::TOP_LEFT:
+        textXPos = paddingLeft;
+        textYPos = paddingTop;
+        break;
+    case CieAlign::TOP_CENTER:
+        textXPos = paddingLeft + ((size.GetWidth() - paddingLeft - paddingRight) / 2) - (textWidth / 2);
+        textYPos = paddingTop;
+        break;
+    case CieAlign::TOP_RIGHT:
+        textXPos = size.GetWidth() - paddingRight - textWidth;
+        textYPos = paddingTop;
+        break;
+    case CieAlign::MIDDLE_LEFT:
+        textXPos = paddingLeft;
+        textYPos = paddingTop + ((size.GetHeight() - paddingTop - paddingBottom) / 2) - (textHeight / 2);
+        break;
+    case CieAlign::CENTER:
+        textXPos = paddingLeft + ((size.GetWidth() - paddingLeft - paddingRight) / 2) - (textWidth / 2);
+        textYPos = paddingTop + ((size.GetHeight() - paddingTop - paddingBottom) / 2) - (textHeight / 2);
+        break;
+    case CieAlign::MIDDLE_RIGHT:
+        textXPos = size.GetWidth() - paddingRight - textWidth;
+        textYPos = paddingTop + ((size.GetHeight() - paddingTop - paddingBottom) / 2) - (textHeight / 2);
+        break;
+    case CieAlign::BOTTOM_LEFT:
+        textXPos = paddingLeft;
+        textYPos = size.GetHeight() - paddingBottom - textHeight;
+        break;
+    case CieAlign::BOTTOM_CENTER:
+        textXPos = paddingLeft + ((size.GetWidth() - paddingLeft - paddingRight) / 2) - (textWidth / 2);
+        textYPos = size.GetHeight() - paddingBottom - textHeight;
+        break;
+    case CieAlign::BOTTOM_RIGHT:
+        textXPos = size.GetWidth() - paddingRight - textWidth;
+        textYPos = size.GetHeight() - paddingBottom - textHeight;
+        break;
+    }
+
     dc.DrawText(
         GetLabel(),
-        paddingLeft,
-        paddingTop //
+        textXPos,
+        textYPos //
     );
 }
 
@@ -110,6 +156,21 @@ CieButton *CieButton::padding(int top, int right, int bottom, int left)
     paddingRight = right;
 
     Refresh();
+
+    return this;
+}
+
+CieButton *CieButton::textAlign(CieAlign align)
+{
+    mTextAlign = align;
+    Refresh();
+
+    return this;
+}
+
+CieButton *CieButton::size(int width, int height)
+{
+    SetSize(wxSize(width, height));
 
     return this;
 }
