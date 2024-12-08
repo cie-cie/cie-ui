@@ -12,6 +12,10 @@ public:
 
     CieButton *text(wxString text);
 
+    CieButton *padding(int all);
+    CieButton *padding(int topBottom, int leftRight);
+    CieButton *padding(int top, int right, int bottom, int left);
+
 private:
     wxColor baseBackgroundColor;
     wxColor baseForegroundColor;

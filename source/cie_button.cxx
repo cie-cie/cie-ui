@@ -87,7 +87,29 @@ void CieButton::onPaint(wxPaintEvent &e)
     // draw text
     dc.DrawText(
         GetLabel(),
-        (size.GetWidth() - textWidth) / 2,
-        (size.GetHeight() - textHeight) / 2 //
+        paddingLeft,
+        paddingTop //
     );
+}
+
+CieButton *CieButton::padding(int all)
+{
+    return padding(all, all, all, all);
+}
+
+CieButton *CieButton::padding(int topBottom, int leftRight)
+{
+    return padding(topBottom, leftRight, topBottom, leftRight);
+}
+
+CieButton *CieButton::padding(int top, int right, int bottom, int left)
+{
+    paddingTop = top;
+    paddingBottom = bottom;
+    paddingLeft = left;
+    paddingRight = right;
+
+    Refresh();
+
+    return this;
 }
