@@ -7,6 +7,7 @@ add_library(cieui
     source/flex.cxx
     source/cie_button.cxx
     source/layout.cxx
+    source/view.cxx
     source/default_theme.cxx
 )
 target_include_directories(cieui PUBLIC 

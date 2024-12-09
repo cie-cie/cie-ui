@@ -14,4 +14,14 @@ enum CieAlign
     BOTTOM_RIGHT
 };
 
+typedef struct CieMargin
+{
+    int top;
+    int right;
+    int bottom;
+    int left;
+} CieMargin;
+
+typedef CieMargin CiePadding;
+
 #endif // CIEUI_ALIGN

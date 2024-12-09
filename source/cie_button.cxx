@@ -2,7 +2,7 @@
 #include "default_theme.h"
 #include "layout.h"
 
-CieButton::CieButton(wxWindow *parent) : wxWindow(parent, wxID_ANY)
+CieButton::CieButton(wxWindow *parent) : CieView(parent)
 {
     this->parent = parent;
 
@@ -14,11 +14,11 @@ CieButton::CieButton(wxWindow *parent) : wxWindow(parent, wxID_ANY)
     this->hoverForegroundColor = default_theme::ON_ACCENT_HOVER_COLOR;
 
     // set default padding
-    paddingLeft = paddingRight = 24;
-    paddingTop = paddingBottom = 12;
+    mPadding.left = mPadding.right = 24;
+    mPadding.top = mPadding.bottom = 12;
 
     // set default margin
-    mMarginLeft = mMarginRight = mMarginTop = mMarginBottom = 0;
+    mMargin.left = mMargin.right = mMargin.top = mMargin.bottom = 0;
 
     // set default text align
     mTextAlign = CieAlign::CENTER;
@@ -72,13 +72,14 @@ void CieButton::onPaint(wxPaintEvent &e)
     int textWidth;
     int textHeight;
     dc.GetTextExtent(GetLabel(), &textWidth, &textHeight);
+    wxSize textSize{textWidth, textHeight};
 
     // get required width and height
     int requiredWidth;
     int requiredHeight;
 
-    requiredWidth = textWidth + paddingLeft + paddingRight + mMarginLeft + mMarginRight;
-    requiredHeight = textHeight + paddingTop + paddingBottom + mMarginTop + mMarginBottom;
+    requiredWidth = textWidth + mPadding.left + mPadding.right + mMargin.left + mMargin.right;
+    requiredHeight = textHeight + mPadding.top + mPadding.bottom + mMargin.top + mMargin.bottom;
 
     if (size.GetWidth() < requiredWidth || size.GetHeight() < requiredHeight)
     {
@@ -120,56 +121,15 @@ void CieButton::onPaint(wxPaintEvent &e)
     }
     dc.SetBrush(wxBrush(*bgColor));
 
-    dc.DrawRoundedRectangle(mMarginLeft, mMarginTop, size.GetWidth() - mMarginLeft - mMarginRight, size.GetHeight() - mMarginTop - mMarginBottom, mBorderRadius);
+    dc.DrawRoundedRectangle(mMargin.left, mMargin.top, size.GetWidth() - mMargin.left - mMargin.right, size.GetHeight() - mMargin.top - mMargin.bottom, mBorderRadius);
 
     // draw text
-    int textXPos;
-    int textYPos;
-
-    switch (mTextAlign)
-    {
-    case CieAlign::TOP_LEFT:
-        textXPos = paddingLeft;
-        textYPos = paddingTop;
-        break;
-    case CieAlign::TOP_CENTER:
-        textXPos = paddingLeft + ((size.GetWidth() - paddingLeft - paddingRight) / 2) - (textWidth / 2);
-        textYPos = paddingTop;
-        break;
-    case CieAlign::TOP_RIGHT:
-        textXPos = size.GetWidth() - paddingRight - textWidth;
-        textYPos = paddingTop;
-        break;
-    case CieAlign::MIDDLE_LEFT:
-        textXPos = paddingLeft;
-        textYPos = paddingTop + ((size.GetHeight() - paddingTop - paddingBottom) / 2) - (textHeight / 2);
-        break;
-    case CieAlign::CENTER:
-        textXPos = paddingLeft + ((size.GetWidth() - paddingLeft - paddingRight) / 2) - (textWidth / 2);
-        textYPos = paddingTop + ((size.GetHeight() - paddingTop - paddingBottom) / 2) - (textHeight / 2);
-        break;
-    case CieAlign::MIDDLE_RIGHT:
-        textXPos = size.GetWidth() - paddingRight - textWidth;
-        textYPos = paddingTop + ((size.GetHeight() - paddingTop - paddingBottom) / 2) - (textHeight / 2);
-        break;
-    case CieAlign::BOTTOM_LEFT:
-        textXPos = paddingLeft;
-        textYPos = size.GetHeight() - paddingBottom - textHeight;
-        break;
-    case CieAlign::BOTTOM_CENTER:
-        textXPos = paddingLeft + ((size.GetWidth() - paddingLeft - paddingRight) / 2) - (textWidth / 2);
-        textYPos = size.GetHeight() - paddingBottom - textHeight;
-        break;
-    case CieAlign::BOTTOM_RIGHT:
-        textXPos = size.GetWidth() - paddingRight - textWidth;
-        textYPos = size.GetHeight() - paddingBottom - textHeight;
-        break;
-    }
+    wxPoint contentPosition = calculateContentPosition(mTextAlign, mMargin, mPadding, size, textSize);
 
     dc.DrawText(
         GetLabel(),
-        textXPos,
-        textYPos //
+        contentPosition.x,
+        contentPosition.y //
     );
 }
 
@@ -185,10 +145,10 @@ CieButton *CieButton::padding(int topBottom, int leftRight)
 
 CieButton *CieButton::padding(int top, int right, int bottom, int left)
 {
-    paddingTop = top;
-    paddingBottom = bottom;
-    paddingLeft = left;
-    paddingRight = right;
+    mPadding.top = top;
+    mPadding.bottom = bottom;
+    mPadding.left = left;
+    mPadding.right = right;
 
     Refresh();
 
@@ -222,10 +182,10 @@ CieButton *CieButton::margin(int topBottom, int leftRight)
 
 CieButton *CieButton::margin(int top, int right, int bottom, int left)
 {
-    mMarginTop = top;
-    mMarginRight = right;
-    mMarginBottom = bottom;
-    mMarginLeft = left;
+    mMargin.top = top;
+    mMargin.right = right;
+    mMargin.bottom = bottom;
+    mMargin.left = left;
 
     Refresh();
 

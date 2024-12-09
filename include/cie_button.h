@@ -1,10 +1,9 @@
 #if !defined(CIEUI_BUTTON)
 #define CIEUI_BUTTON
 
-#include <wx/wx.h>
-#include "cie_align.h"
+#include "view.h"
 
-class CieButton : public wxWindow
+class CieButton : public CieView
 {
 public:
     CieButton(wxWindow *parent);
@@ -39,15 +38,8 @@ private:
     wxColor hoverBackgroundColor;
     wxColor hoverForegroundColor;
 
-    int paddingTop;
-    int paddingRight;
-    int paddingBottom;
-    int paddingLeft;
-
-    int mMarginTop;
-    int mMarginRight;
-    int mMarginBottom;
-    int mMarginLeft;
+    CiePadding mPadding;
+    CieMargin mMargin;
 
     double mBorderRadius;
 
