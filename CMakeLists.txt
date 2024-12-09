@@ -4,7 +4,7 @@ project(cieui VERSION 0.0.1)
 
 add_library(cieui
     source/cie_frame.cxx
-    source/cie_column.cxx
+    source/flex.cxx
     source/cie_button.cxx
     source/layout.cxx
     source/default_theme.cxx

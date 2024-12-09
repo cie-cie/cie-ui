@@ -4,14 +4,14 @@
 #include "layout.h"
 #include <functional>
 
-class CieColumn : public CieLayout
+class CieFlex : public CieLayout
 {
 public:
-    CieColumn(wxWindow *parent);
+    CieFlex(wxWindow *parent);
 
-    static CieColumn *New(wxWindow *parent);
+    static CieFlex *New(wxWindow *parent);
 
-    CieColumn *children(std::function<std::vector<wxWindow *>(wxWindow *)> builder);
+    CieFlex *children(std::function<std::vector<wxWindow *>(wxWindow *)> builder);
     std::pair<wxPoint, wxSize> calculateChildPositionAndSize(wxWindow *child, wxPoint suggestedPosition, wxSize suggestedSize) override;
 
 private:

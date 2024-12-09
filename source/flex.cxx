@@ -1,15 +1,15 @@
-#include "cie_column.h"
+#include "flex.h"
 
-CieColumn::CieColumn(wxWindow *parent) : CieLayout(parent)
+CieFlex::CieFlex(wxWindow *parent) : CieLayout(parent)
 {
 }
 
-CieColumn *CieColumn::New(wxWindow *parent)
+CieFlex *CieFlex::New(wxWindow *parent)
 {
-    return new CieColumn(parent);
+    return new CieFlex(parent);
 }
 
-CieColumn *CieColumn::children(std::function<std::vector<wxWindow *>(wxWindow *)> builder)
+CieFlex *CieFlex::children(std::function<std::vector<wxWindow *>(wxWindow *)> builder)
 {
     std::vector<wxWindow *> lChildren = builder(this);
 
@@ -21,7 +21,7 @@ CieColumn *CieColumn::children(std::function<std::vector<wxWindow *>(wxWindow *)
     return this;
 }
 
-std::pair<wxPoint, wxSize> CieColumn::calculateChildPositionAndSize(wxWindow *pChild, wxPoint suggestedPosition, wxSize suggestedSize)
+std::pair<wxPoint, wxSize> CieFlex::calculateChildPositionAndSize(wxWindow *pChild, wxPoint suggestedPosition, wxSize suggestedSize)
 {
     // find index
     int index = -1;
