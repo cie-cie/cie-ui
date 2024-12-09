@@ -1,10 +1,10 @@
 #if !defined(CIEUI_COLUMN)
 #define CIEUI_COLUMN
 
-#include <wx/wx.h>
+#include "layout.h"
 #include <functional>
 
-class CieColumn : public wxPanel
+class CieColumn : public CieLayout
 {
 public:
     CieColumn(wxWindow *parent);
@@ -12,10 +12,10 @@ public:
     static CieColumn *New(wxWindow *parent);
 
     CieColumn *children(std::function<std::vector<wxWindow *>(wxWindow *)> builder);
+    std::pair<wxPoint, wxSize> calculateChildPositionAndSize(wxWindow *child, wxPoint suggestedPosition, wxSize suggestedSize) override;
 
 private:
-    std::vector<wxWindow *> mChildren;
-    wxBoxSizer *sizer;
+    std::vector<std::tuple<wxWindow *, wxPoint, wxSize>> mChildren;
 };
 
 #endif // CIEUI_COLUMN

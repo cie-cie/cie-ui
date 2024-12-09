@@ -1,8 +1,11 @@
 #include "cie_button.h"
 #include "default_theme.h"
+#include "layout.h"
 
 CieButton::CieButton(wxWindow *parent) : wxControl(parent, wxID_ANY)
 {
+    this->parent = parent;
+
     this->baseBackgroundColor = default_theme::ACCENT_COLOR;
     this->baseForegroundColor = default_theme::ON_ACCENT_COLOR;
     this->hoverBackgroundColor = default_theme::ACCENT_HOVER_COLOR;
@@ -77,10 +80,26 @@ void CieButton::onPaint(wxPaintEvent &e)
 
     if (size.GetWidth() < requiredWidth || size.GetHeight() < requiredHeight)
     {
-        SetSize(
-            wxMax(requiredWidth, size.GetWidth()),
-            wxMax(requiredHeight, size.GetHeight()) //
-        );
+        int suggestedWidth = wxMax(requiredWidth, size.GetWidth());
+        int suggestedHeight = wxMax(requiredHeight, size.GetHeight());
+
+        if (CieLayout *parentLayout = dynamic_cast<CieLayout *>(parent))
+        {
+            std::pair<wxPoint, wxSize> approvedParams = parentLayout->calculateChildPositionAndSize(this, wxPoint(0, 0), wxSize(suggestedWidth, suggestedHeight));
+            wxPoint approvedPosition = approvedParams.first;
+            wxSize approvedSize = approvedParams.second;
+            if (approvedPosition.x == -1 || approvedPosition.y == -1 || approvedSize.GetWidth() == 0 || approvedSize.GetHeight() == 0)
+            {
+                return;
+            }
+
+            SetPosition(approvedPosition);
+            SetSize(approvedSize);
+        }
+        else
+        {
+            SetSize(suggestedWidth, suggestedHeight);
+        }
     }
 
     size = GetSize();

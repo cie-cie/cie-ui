@@ -26,6 +26,8 @@ public:
     CieButton *size(int width, int height);
 
 private:
+    wxWindow *parent;
+
     wxColor baseBackgroundColor;
     wxColor baseForegroundColor;
     wxColor hoverBackgroundColor;
