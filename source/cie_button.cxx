@@ -2,17 +2,16 @@
 #include "default_theme.h"
 #include "layout.h"
 
-CieButton::CieButton(wxWindow *parent) : wxControl(parent, wxID_ANY)
+CieButton::CieButton(wxWindow *parent) : wxWindow(parent, wxID_ANY)
 {
     this->parent = parent;
+
+    this->hovered = false;
 
     this->baseBackgroundColor = default_theme::ACCENT_COLOR;
     this->baseForegroundColor = default_theme::ON_ACCENT_COLOR;
     this->hoverBackgroundColor = default_theme::ACCENT_HOVER_COLOR;
     this->hoverForegroundColor = default_theme::ON_ACCENT_HOVER_COLOR;
-
-    SetBackgroundColour(baseBackgroundColor);
-    SetForegroundColour(baseForegroundColor);
 
     // set default padding
     paddingLeft = paddingRight = 24;
@@ -23,6 +22,9 @@ CieButton::CieButton(wxWindow *parent) : wxControl(parent, wxID_ANY)
 
     // set default text align
     mTextAlign = CieAlign::CENTER;
+
+    // default border radius
+    mBorderRadius = 4;
 
     Bind(wxEVT_ENTER_WINDOW, &CieButton::mouseEnterListener, this);
     Bind(wxEVT_LEAVE_WINDOW, &CieButton::mouseLeaveListener, this);
@@ -44,8 +46,8 @@ void CieButton::mouseEnterListener(wxMouseEvent &e)
 {
     SetCursor(wxCURSOR_HAND);
 
-    SetBackgroundColour(hoverBackgroundColor);
-    SetForegroundColour(hoverForegroundColor);
+    hovered = true;
+    Refresh();
 
     e.Skip();
 }
@@ -54,8 +56,8 @@ void CieButton::mouseLeaveListener(wxMouseEvent &e)
 {
     SetCursor(wxCURSOR_ARROW);
 
-    SetBackgroundColour(baseBackgroundColor);
-    SetForegroundColour(baseForegroundColor);
+    hovered = false;
+    Refresh();
 
     e.Skip();
 }
@@ -106,8 +108,19 @@ void CieButton::onPaint(wxPaintEvent &e)
 
     // draw background
     dc.SetPen(*wxTRANSPARENT_PEN);
-    dc.SetBrush(wxBrush(GetBackgroundColour()));
-    dc.DrawRectangle(mMarginLeft, mMarginTop, size.GetWidth() - mMarginRight, size.GetHeight() - mMarginBottom);
+
+    wxColor *bgColor;
+    if (hovered)
+    {
+        bgColor = &hoverBackgroundColor;
+    }
+    else
+    {
+        bgColor = &baseBackgroundColor;
+    }
+    dc.SetBrush(wxBrush(*bgColor));
+
+    dc.DrawRoundedRectangle(mMarginLeft, mMarginTop, size.GetWidth() - mMarginLeft - mMarginRight, size.GetHeight() - mMarginTop - mMarginBottom, mBorderRadius);
 
     // draw text
     int textXPos;
@@ -214,6 +227,22 @@ CieButton *CieButton::margin(int top, int right, int bottom, int left)
     mMarginBottom = bottom;
     mMarginLeft = left;
 
+    Refresh();
+
+    return this;
+}
+
+bool CieButton::SetBackgroundColour(const wxColour &colour)
+{
+    this->baseBackgroundColor = colour;
+    Refresh();
+
+    return true;
+}
+
+CieButton *CieButton::borderRadius(double radius)
+{
+    this->mBorderRadius = radius;
     Refresh();
 
     return this;

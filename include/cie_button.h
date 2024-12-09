@@ -4,7 +4,7 @@
 #include <wx/wx.h>
 #include "cie_align.h"
 
-class CieButton : public wxControl
+class CieButton : public wxWindow
 {
 public:
     CieButton(wxWindow *parent);
@@ -25,8 +25,14 @@ public:
 
     CieButton *size(int width, int height);
 
+    CieButton *borderRadius(double radius);
+
+    bool SetBackgroundColour(const wxColour &colour) override;
+
 private:
     wxWindow *parent;
+
+    bool hovered;
 
     wxColor baseBackgroundColor;
     wxColor baseForegroundColor;
@@ -42,6 +48,8 @@ private:
     int mMarginRight;
     int mMarginBottom;
     int mMarginLeft;
+
+    double mBorderRadius;
 
     CieAlign mTextAlign;
 
